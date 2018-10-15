@@ -1,0 +1,15 @@
+.tic-tac-toe-tile {
+    cursor: pointer;
+    border: 2px solid black;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    display: inline-block;
+    margin: 0;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.tic-tac-toe-row {
+    height: 40px !important;
+}
