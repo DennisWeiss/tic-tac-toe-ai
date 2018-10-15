@@ -51,9 +51,23 @@ class TicTacToeField extends React.Component {
                 won = player
             }
         })
+        if (!won && this.tied(this.state.tiles)) {
+            won = 'tied'
+        }
         this.setState({
             won: won
         }, this.aiMove)
+    }
+
+    tied = tiles => {
+        for (let i = 0; i < tiles.length; i++) {
+            for (let j = 0; j < tiles[i].length; j++) {
+                if (tiles[i][j] === '') {
+                    return false
+                }
+            }
+        }
+        return true
     }
 
     clickTile(i, j) {
@@ -67,10 +81,25 @@ class TicTacToeField extends React.Component {
         }
     }
 
+    reset() {
+        this.setState({
+            tiles: [['', '', ''],
+                ['', '', ''],
+                ['', '', '']],
+            currentPlayer: players[Math.floor(2 * Math.random())],
+            won: false
+        }, this.aiMove)
+    }
+
     render() {
         return (
             <div>
-                It's player's {this.state.currentPlayer} turn.
+                <button onClick={this.reset.bind(this)}>Restart</button>
+                <br/>
+                <br/>
+                {
+                    this.state.won === 'tied' ? 'Game is tied!' : `It's player's ${this.state.currentPlayer} turn.`
+                }
                 <br/>
                 <br/>
                 <div>
@@ -79,7 +108,7 @@ class TicTacToeField extends React.Component {
                             <div className='tic-tac-toe-row' key={i}>
                                 {
                                     row.map((tile, j) =>
-                                        <div className='tic-tac-toe-tile'
+                                        <div className={`tic-tac-toe-tile ${tile === '' ? 'clickable' : ''}`}
                                              key={i + ',' + j}
                                              onClick={event => this.clickTile(i, j)}>
                                             {tile}
@@ -93,7 +122,7 @@ class TicTacToeField extends React.Component {
                 <br/>
                 <br/>
                 {
-                    this.state.won &&
+                    this.state.won && this.state.won !== 'tied' &&
                     <div>
                         {this.state.won} has won!
                     </div>
